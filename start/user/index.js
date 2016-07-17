@@ -1,14 +1,18 @@
-var phrases = require('./ru');
+var db = require('db');
+//NODE_PATH =.
+var log = require('logger')(module);
 
-function User(name) {
-	this.name = name;
+function User(name){
+    this.name = name;
 }
 
-User.prototype.hello = function (who) {
-	console.log(phrases.Hello + ", " + who.name);
+User.prototype.hello = function(who){
+    log(db.getPhrase('Hello') + ", " + who.name);
 };
 
-console.log('user.js is requred!');
+//console.log("user.js is required!");
 
-exports.User = User;
-//global.User = User;
+//exports.User = User;
+module.exports = User;
+
+//console.log(module);
