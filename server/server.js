@@ -5,6 +5,6 @@ var server = new http.createServer();
 
 server.on('request', require('./request'));
 
-server.listen(1338);
+server.listen(1337);
 
 debug('Server is running');
