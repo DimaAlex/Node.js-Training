@@ -6,8 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var errorhandler = require('errorhandler');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
 var HttpError = require('error').HttpError;
 
 var app = express();
@@ -40,13 +38,16 @@ app.use(session({
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
-app.use(function (req, res, next) {
-  req.session.numberOfVisits = req.session.numberOfVisits + 1 || 1;
-  res.send("Visits:" + req.session.numberOfVisits);
-});
+app.use('/', require('./routes/index'));
 
-app.use('/', routes);
+var users = require('./routes/users');
 app.use('/users', users);
+
+var login = require('./routes/login');
+app.use('/login', login);
+
+var chat = require('./routes/chat');
+app.use('/chat', chat);
 
 // error handlers
 app.use(function(err, req, res, next) {
