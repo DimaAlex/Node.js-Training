@@ -8,6 +8,7 @@ var errorhandler = require('errorhandler');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var HttpError = require('error').HttpError;
 
 var app = express();
 
@@ -24,24 +25,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-// app.use('/users', users);
+app.use(require('./middleware/sendHttpError'));
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
+app.use('/', routes);
+app.use('/users', users);
 
 // error handlers
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
+app.use(function(err, req, res, next) {
+  if (typeof  err == 'number') {
+    err = new HttpError(err);
+  }
 
-    var errorHandler = errorhandler();
-    errorHandler(err, req, res, next);
-  });
-}
+  if (err instanceof HttpError) {
+    res.sendHttpError(err);
+  } else {
+    if (app.get('env') === 'development') {
+      errorhandler()(err, req, res, next);
+    } else {
+      log.error(err);
+      err = new HttpError(500);
+      res.sendHttpError(err);
+    }
+  }
+});
+
 
 module.exports = app;

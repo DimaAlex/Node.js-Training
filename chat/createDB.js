@@ -33,7 +33,7 @@ function createUsers(callback) {
 
   var users = [
     {username: 'Вася', password: 'supervasya'},
-    {username: 'admin', password: '123'},
+    {username: 'Петя', password: '123'},
     {username: 'admin', password: 'thetruehero'}
   ];
 
