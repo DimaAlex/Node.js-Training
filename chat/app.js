@@ -24,8 +24,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(require('./middleware/sendHttpError'));
-
 var session = require('express-session');
 var config = require('config');
 var mongoose = require('./libs/mongoose');
@@ -38,6 +36,10 @@ app.use(session({
   store: new MongoStore({mongooseConnection: mongoose.connection})
 }));
 
+app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
+var checkAuth = require('./middleware/checkAuth');
+
 app.use('/', require('./routes/index'));
 
 var users = require('./routes/users');
@@ -46,8 +48,11 @@ app.use('/users', users);
 var login = require('./routes/login');
 app.use('/login', login);
 
+var logout = require('./routes/logout');
+app.use('/logout', logout);
+
 var chat = require('./routes/chat');
-app.use('/chat', chat);
+app.use('/chat', checkAuth, chat);
 
 // error handlers
 app.use(function(err, req, res, next) {
