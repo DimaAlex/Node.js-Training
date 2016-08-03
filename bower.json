@@ -1,0 +1,17 @@
+{
+  "name": "bower-components",
+  "homepage": "https://github.com/DimaAlex/Node.js-Training",
+  "authors": [
+    "DimaAlex <dimaalekseichik@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
