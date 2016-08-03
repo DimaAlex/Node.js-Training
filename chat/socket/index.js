@@ -90,7 +90,7 @@ module.exports = function(server) {
     clients.forEach(function (client) {
       if (client.handshake.session.id != sid) return;
 
-      LoadSession(sid, function (err, session) {
+      loadSession(sid, function (err, session) {
         if (err) {
           client.emit("error", "server error");
           client.disconnect();
@@ -98,7 +98,7 @@ module.exports = function(server) {
         }
 
         if (!session) {
-          client.emit("error", "handshake unauthorized");
+          client.emit("logout");
           client.disconnect();
           return;
         }
