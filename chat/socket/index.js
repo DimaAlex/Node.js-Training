@@ -38,6 +38,18 @@ function loadUser(session, callback) {
   });
 }
 
+function findClientsSocket(io) {
+  var res = [];
+  var namespace = io.of("/");
+
+  if (namespace) {
+    for (var id in namespace.connected) {
+      res.push(namespace.connected[id]);
+    }
+  }
+  return res;
+}
+
 module.exports = function(server) {
   var io = require('socket.io')(server);
   io.set('origins', 'localhost:*');
@@ -84,8 +96,8 @@ module.exports = function(server) {
     });
   });
 
-  io.on('session:reload', function(sid){
-    var clients = io.sockets.clients();
+  io.on('sessionReload', function(sid){
+    var clients = findClientsSocket(io);
 
     clients.forEach(function (client) {
       if (client.handshake.session.id != sid) return;
