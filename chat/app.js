@@ -26,14 +26,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var session = require('express-session');
 var config = require('config');
-var mongoose = require('./libs/mongoose');
-var MongoStore = require('connect-mongo')(session);
+
+var sessionStore = require('./libs/sessionStore');
 
 app.use(session({
   secret: config.get('session:secret'),
   key: config.get('session:key'),
   cookie: config.get('session:cookie'),
-  store: new MongoStore({mongooseConnection: mongoose.connection})
+  store: sessionStore
 }));
 
 app.use(require('./middleware/sendHttpError'));
