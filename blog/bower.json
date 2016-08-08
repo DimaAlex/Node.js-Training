@@ -1,0 +1,17 @@
+{
+  "name": "blog",
+  "description": "",
+  "main": "",
+  "authors": [
+    "DimaAlex"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/DimaAlex/Node.js-Training",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
