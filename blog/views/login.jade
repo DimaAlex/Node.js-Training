@@ -1,3 +1,26 @@
 extends layout/layout
+block vars
+  - var title= 'Login'
 
 block content
+  h3 Enter login and password
+
+  form.form-horizontal.login-form(name="login-form")
+    .form-group
+      label(for="input-username").col-lg-2.control-label Name
+
+      .col-lg-10
+        input(name="username", value="name", type="text", placeholder="Name").form-control#input-username
+
+    .form-group
+      label(for="input-password").col-lg-2.control-label Password
+
+      .col-lg-10
+        input(name="password", value="password", type="password", placeholder="Password").form-control#input-password
+
+    .form-group
+      .col-lg-offset-2.col-lg-10
+        button(type="submit", data-loading-text="Sending...").btn.btn-primary Login
+
+script
+  // ajax requestss
