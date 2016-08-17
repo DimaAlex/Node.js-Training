@@ -10,6 +10,19 @@ var users = require('./routes/users');
 
 var app = express();
 
+var session = require('express-session');
+var config = require('./config');
+var sessionStore = require('./lib/sessionStore');
+
+app.use(session({
+  secret: config.get('session:secret'),
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  store: sessionStore,
+  resave: true,
+  saveUninitialized: true
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
