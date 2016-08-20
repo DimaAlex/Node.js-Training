@@ -1,3 +1,12 @@
-h1 My account
-h3 my name
-h3 when created
+extends ../layout/layout
+block vars
+  - var title= 'Account'
+
+block content
+  h1 My account
+
+  h4 Name
+  p= user.get('username')
+
+  h4 Created at
+  p= user.get('created')

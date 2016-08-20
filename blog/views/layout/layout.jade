@@ -17,6 +17,7 @@ html
       .col-lg-9
         block content
       .col-lg-3
-        include ../partials/sidebar
+        if currentUser
+          include ../partials/sidebar
     footer
       block footer

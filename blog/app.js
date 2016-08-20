@@ -28,6 +28,7 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+require('express-debug')(app, {/* settings */});
 
 var session = require('express-session');
 var config = require('./config');
@@ -41,6 +42,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
+app.use(require('./middleware/loadCurrentUser'));
 
 app.use('/', routes);
 app.use('/users', users);

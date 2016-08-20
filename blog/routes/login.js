@@ -22,7 +22,7 @@ router.post('/', function (req, res, next) {
       }
     }
 
-    req.session.user = user._id;
+    req.session.currentUserId = user._id;
     res.send({});
 
   });
