@@ -6,7 +6,10 @@ block content
   h1 My account
 
   h4 Name
-  p= user.get('username')
+  p= user.username
 
   h4 Created at
-  p= user.get('created')
+  p= user.created
+
+  if currentUser.id === user.id
+    a(href='/users/#{user.id}/edit').btn.btn-primary Edit account

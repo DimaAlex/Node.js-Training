@@ -1,0 +1,50 @@
+extends ../layout/layout
+block vars
+  - var title= 'Edit account'
+
+block content
+  h3 Change your account
+
+  form.form-horizontal.edit-account-form(name="edit-account-form")
+    .form-group
+      label(for="input-username").col-lg-2.control-label Name
+
+      .col-lg-10
+        input(name="username", value=currentUser.username, type="text", placeholder="Name").form-control#input-username
+
+    .form-group
+      label(for="input-password").col-lg-2.control-label Password
+
+      .col-lg-10
+        input(name="password", type="password", placeholder="Password").form-control#input-password
+
+    .form-group
+      .col-lg-offset-2.col-lg-10
+        button(type="submit", data-loading-text="Sending...").btn.btn-primary Edit
+        span.help-block.error
+
+    script.
+      $(document.forms['edit-account-form']).on('submit', function () {
+        var form = $(this);
+        $('.error', form).html('');
+        $(":submit", form).button("loading");
+        $.ajax({
+          url: "/users/#{currentUser.id}/edit",
+          method: "POST",
+          data: form.serialize(),
+          complete: function () {
+            $(":submit", form).button("reset");
+          },
+          statusCode: {
+            200: function () {
+              form.html("Edit successfully").addClass('alert-success');
+              window.location.href = "/users/#{currentUser.id}";
+            },
+            403: function (jqXHR) {
+              var error = JSON.parse(jqXHR.responseText);
+              $('.error', form).html(error.message);
+            }
+          }
+        });
+        return false;
+      });
