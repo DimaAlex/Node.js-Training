@@ -2,9 +2,12 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user').User;
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('users/index');
+  User.find({}, function (err, users) {
+    if (err) return next(err);
+
+    res.render('users/index', { users: users });
+  });
 });
 
 router.get('/:id', function (req, res, next) {
