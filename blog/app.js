@@ -28,9 +28,26 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+require('express-debug')(app, {/* settings */});
+
+var session = require('express-session');
+var config = require('./config');
+var sessionStore = require('./lib/sessionStore');
+
+app.use(session({
+  secret: config.get('session:secret'),
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  store: sessionStore,
+  resave: true,
+  saveUninitialized: true
+}));
+
+app.use(require('./middleware/loadCurrentUser'));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/login', require('./routes/login'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

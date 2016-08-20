@@ -1,7 +1,8 @@
 doctype html
 html
+  block vars
   head
-    title= title
+    title #{title}
     link(rel='stylesheet', href='/stylesheets/style.sass')
     link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
     script(src="/bower_components/jquery/dist/jquery.js")
@@ -13,7 +14,10 @@ html
     section.container
       include ../partials/topNavigation
 
-      block content
-
+      .col-lg-9
+        block content
+      .col-lg-3
+        if currentUser
+          include ../partials/sidebar
     footer
       block footer

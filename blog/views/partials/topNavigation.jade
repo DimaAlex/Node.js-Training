@@ -1,7 +1,11 @@
 nav.navbar.navbar-default(role='navigation')
     ul.nav.navbar-nav
       li
-        a(href='/') Главная
+        a(href='/') Main
     ul.nav.navbar-nav.navbar-right
-      li
-        a(href='/login') Войти
+      li.btn
+        if currentUser
+          // change on button
+          a(href='') Logout
+        else
+          a(href='/login') Login
