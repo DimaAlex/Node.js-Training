@@ -1,0 +1,18 @@
+extends ../layout/layout
+block vars
+  - var title= 'All users'
+
+block content
+  h1 All users
+
+  table.table.table-condensed.table-striped
+    thead
+      tr
+        th Username
+        th created
+    tbody
+      each user in users
+        tr
+          td
+            a(href='/users/#{user.id}')= user.username
+          td= user.created
