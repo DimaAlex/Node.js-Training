@@ -14,5 +14,8 @@ block content
   h4 Created at
   p= article.created
 
-  //if currentUser.id === article.userId
-  //  a(href='/articles/#{article.id}/edit').btn.btn-primary Edit article
+  h4 Author
+  p= author
+
+  if currentUser.id == article.userId
+    a(href='/articles/#{article.id}/edit').btn.btn-primary Edit article

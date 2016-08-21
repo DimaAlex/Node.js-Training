@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user').User;
+var Article = require('../models/article').Article;
 
 router.get('/', function(req, res, next) {
   User.find({}, function (err, users) {
@@ -39,6 +40,14 @@ router.post('/:id/edit', function (req, res, next) {
   });
 
   res.send({});
+});
+
+router.get('/:id/articles', function (req, res, next) {
+  Article.find({ userId: req.params.id }, function (err, articles) {
+    if (err) return next(err);
+
+    res.render('articles/index', { articles: articles });
+  });
 });
 
 module.exports = router;
