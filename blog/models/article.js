@@ -4,7 +4,6 @@ var mongoose = require('../lib/mongoose'),
 var schema = new Schema({
   title: {
     type: String,
-    unique: true,
     require: true
   },
   body: {
@@ -16,3 +15,5 @@ var schema = new Schema({
     default: Date.now
   }
 });
+
+exports.Article = mongoose.model('Article', schema);

@@ -1,0 +1,18 @@
+extends ../layout/layout
+block vars
+  - var title= 'Article'
+
+block content
+  h1 Article
+
+  h4 Title
+  p= article.title
+
+  h4 Body
+  p= article.body
+
+  h4 Created at
+  p= article.created
+
+  //if currentUser.id === article.userId
+  //  a(href='/articles/#{article.id}/edit').btn.btn-primary Edit article
