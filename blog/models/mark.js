@@ -2,22 +2,22 @@ var mongoose = require('../lib/mongoose'),
     Schema = mongoose.Schema;
 
 var schema = new Schema({
-  title: {
-    type: String,
+  number: {
+    type: Number,
     require: true
   },
-  body: {
-    type: String,
+  userId: {
+    type: Schema.ObjectId,
+    required: true
+  },
+  articleId: {
+    type: Schema.ObjectId,
     required: true
   },
   created: {
     type: Date,
     default: Date.now
-  },
-  userId: {
-    type: Schema.ObjectId,
-    required: true
   }
 });
 
-exports.Article = mongoose.model('Article', schema);
+exports.Mark = mongoose.model('Mark', schema);

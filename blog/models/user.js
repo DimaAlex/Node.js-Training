@@ -67,7 +67,6 @@ schema.statics.authorize = function(username, password, callback) {
   ], callback);
 };
 
-exports.User = mongoose.model('User', schema);
 function AuthError(message) {
   Error.apply(this, arguments);
   Error.captureStackTrace(this, AuthError);
@@ -79,4 +78,5 @@ util.inherits(AuthError, Error);
 
 AuthError.prototype.name = 'AuthError';
 
+exports.User = mongoose.model('User', schema);
 exports.AuthError = AuthError;
