@@ -50,4 +50,13 @@ router.get('/:id/articles', function (req, res, next) {
   });
 });
 
+router.post('/:id/destroy', function (req, res, next) {
+  User.remove({ _id: req.params.id }, function (err) {
+    if (err) return next(err);
+  });
+
+  res.locals.currentUser = null;
+  res.render('index', { title: 'Blog ne Bloggera' });
+});
+
 module.exports = router;

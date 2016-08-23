@@ -13,3 +13,5 @@ block content
 
   if currentUser.id === user.id
     a(href='/users/#{user.id}/edit').btn.btn-primary Edit account
+    .pad
+    a(href='', onclick="$('<form method=POST action=/users/#{currentUser.id}/destroy>').submit();return false").btn.btn-danger Delete account
