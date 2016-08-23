@@ -45,6 +45,7 @@ router.get('/:id/edit', function (req, res, next) {
 
     res.render('articles/edit', { article: article });
   });
+});
 
 router.post('/:id/edit', function (req, res, next) {
   var title = req.body.title;
@@ -65,6 +66,17 @@ router.post('/:id/edit', function (req, res, next) {
 
   res.send({});
 });
+
+router.post('/:id/destroy', function (req, res, next) {
+  Article.remove({ _id: req.params.id }, function (err) {
+    if (err) return next(err);
+  });
+
+  Article.find({ userId: req.session.currentUserId }, function (err, articles) {
+    if (err) return next(err);
+
+    res.render('articles/index', { articles: articles });
+  });
 });
 
 module.exports = router;

@@ -2,4 +2,7 @@ extends layout/layout
 
 block content
   h1= title
-  p Welcome to #{title}, #{currentUser.get('username')}
+  if currentUser
+    p Welcome to #{title}, #{currentUser.get('username')}
+  else
+    p Welcome to #{title}

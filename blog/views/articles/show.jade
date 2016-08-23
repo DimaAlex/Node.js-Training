@@ -19,3 +19,5 @@ block content
 
   if currentUser.id == article.userId
     a(href='/articles/#{article.id}/edit').btn.btn-primary Edit article
+    .pad
+    a(href='', onclick="$('<form method=POST action=/articles/#{article.id}/destroy>').submit();return false").btn.btn-danger Delete article
