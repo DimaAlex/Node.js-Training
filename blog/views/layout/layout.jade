@@ -5,8 +5,11 @@ html
     title #{title}
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet", href="/bower_components/bootstrap-star-rating/css/star-rating.css")
+
     script(src="/bower_components/jquery/dist/jquery.js")
     script(src="/bower_components/bootstrap/dist/js/bootstrap.js")
+    script(src="/bower_components/bootstrap-star-rating/js/star-rating.js")
   body
     header
       block header
@@ -17,7 +20,6 @@ html
       .col-lg-9
         block content
       .col-lg-3
-        if currentUser
-          include ../partials/sidebar
+        include ../partials/sidebar
     footer
       block footer

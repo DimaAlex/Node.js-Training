@@ -5,7 +5,6 @@ nav.navbar.navbar-default(role='navigation')
     ul.nav.navbar-nav.navbar-right
       li.btn
         if currentUser
-          // change on button
-          a(href='') Logout
+          a(href='', onclick="$('<form method=POST action=/logout>').submit();return false") Logout
         else
           a(href='/login') Login
