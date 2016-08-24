@@ -15,7 +15,7 @@ block content
   p= article.created
 
   h4 Author
-  p= author
+  a(href="/users/#{article.userId}")= author
 
   h4 Average mark
   p= averageMark
