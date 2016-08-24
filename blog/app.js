@@ -48,6 +48,7 @@ app.use(require('./middleware/loadCurrentUser'));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/login', require('./routes/login'));
+app.use('/logout', require('./routes/logout'));
 app.use('/articles', require('./routes/articles'));
 
 // catch 404 and forward to error handler

@@ -46,7 +46,6 @@ block content
       $.ajax({
         url: "/articles/#{article.id}/mark/destroy",
         method: "POST",
-        data: { rating: value },
         statusCode: {
           200: function () {
             window.location.href = "/articles/#{article.id}";

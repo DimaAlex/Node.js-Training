@@ -2,12 +2,13 @@
   h3 Menu
     ul.nav.nav-list
       li
-        a(href='/users/#{currentUser.id}') My account
-      li
-        a(href='/users') All users
-      li
-        a(href='/articles/new') New article
-      li
         a(href='/articles') All articles
-      li
-        a(href='/users/#{currentUser.id}/articles') My articles
+      if currentUser
+        li
+          a(href='/users/#{currentUser.id}') My account
+        li
+          a(href='/users') All users
+        li
+          a(href='/articles/new') New article
+        li
+          a(href='/users/#{currentUser.id}/articles') My articles
