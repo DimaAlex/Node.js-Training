@@ -38,7 +38,7 @@ router.get('/:id', function (req, res, next) {
     User.findById(article.userId, function (err, user) {
       if (err) return next(err);
 
-      Mark.find({ articleId: article.id }, function (err, marks) {
+      Mark.find({ article: article }, function (err, marks) {
         if (err) next(err);
 
         marks.forEach(function (mark) {
@@ -53,7 +53,7 @@ router.get('/:id', function (req, res, next) {
 
       });
 
-      Mark.findOne({ articleId: article.id, userId: user.id }, function (err, mark) {
+      Mark.findOne({ article: article, user: user }, function (err, mark) {
         if (err) next(err);
 
         var markValue = mark ? mark.number : 0;
@@ -107,12 +107,15 @@ router.post('/:id/destroy', function (req, res, next) {
 
 router.post('/:id/mark', function (req, res, next) {
   var articleId = req.params.id;
-  var userId = req.session.currentUserId;
+  var user = req.currentUser;
   var number = req.body.rating;
 
-  var mark = new Mark({ articleId: articleId, userId: userId, number: number });
-  mark.save(function (err) {
+  Article.findById(articleId, function (err, article) {
     if (err) return next(err);
+
+    Mark.create(number, user, article, function (err) {
+      if (err) return next(err);
+    });
   });
 
   res.send({});
@@ -120,12 +123,15 @@ router.post('/:id/mark', function (req, res, next) {
 
 router.post('/:id/mark/destroy', function (req, res, next) {
   var articleId = req.params.id;
-  var userId = req.session.currentUserId;
+  var user = req.currentUser;
 
-  Mark.remove({ userId: userId, articleId: articleId }, function (err) {
-    if (err) return next(err);
-    res.send({});
+  Article.findById(articleId, function (err, article) {
+    Mark.destroy(user, article, function (err) {
+      if (err) return next(err);
+    });
   });
+
+  res.send({});
 });
 
 module.exports = router;
