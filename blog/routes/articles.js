@@ -5,7 +5,7 @@ var User = require('../models/user').User;
 var Mark = require('../models/mark').Mark;
 
 router.get('/', function(req, res, next) {
-  Article.find({}, function (err, articles) {
+  Article.find().sort({created: -1}).populate('user').exec(function(err, articles) {
     if (err) return next(err);
 
     res.render('articles/index', { articles: articles });
@@ -20,48 +20,68 @@ router.post('/new', function (req, res, next) {
   var title = req.body.title;
   var body = req.body.body;
 
-  var article = new Article({ title: title, body: body, userId: req.session.currentUserId });
-  article.save(function (err) {
+  Article.create(title, body, req.currentUser, function (err) {
     if (err) return next(err);
   });
 
   res.send({});
 });
 
+router.post('/search', function (req, res, next) {
+  var searchString = req.body.search;
+
+  if (searchString) {
+    var searchParams = (searchString == "") ? {} : { $text: { $search: searchString }};
+    Article.find(searchParams).limit(20)
+        .populate({ path: 'user', select: 'username' })
+        .exec(function (err, articles) {
+          if (err) return next(err);
+
+          User.find(searchParams).limit(20)
+              .populate('articles')
+              .exec(function (err, users) {
+                if (err) return next(err);
+                var allArticles = articles;
+                users.forEach(function (user) {
+                  allArticles = articles.concat(user.articles);
+                });
+                res.render('articles/partials/listOfArticles', { articles: allArticles });
+              });
+        });
+  }
+  else
+    res.send({});
+});
+
 router.get('/:id', function (req, res, next) {
   var averageMark = 0;
   var numbers = [];
 
-  Article.findById(req.params.id, function (err, article) {
+  Article.findById(req.params.id).populate('user').exec(function (err, article) {
     if (err) return next(err);
 
-    User.findById(article.userId, function (err, user) {
-      if (err) return next(err);
+    Mark.find({ article: article }, function (err, marks) {
+      if (err) next(err);
 
-      Mark.find({ article: article }, function (err, marks) {
-        if (err) next(err);
-
-        marks.forEach(function (mark) {
-          numbers.push(mark.number);
+      marks.forEach(function (mark) {
+        numbers.push(mark.number);
+      });
+      if (numbers.length > 0) {
+        var sum = numbers.reduce(function (a, b) {
+          return a + b;
         });
-        if (numbers.length > 0) {
-          var sum = numbers.reduce(function (a, b) {
-            return a + b;
-          });
-          averageMark = sum / numbers.length;
-        }
-
-      });
-
-      Mark.findOne({ article: article, user: user }, function (err, mark) {
-        if (err) next(err);
-
-        var markValue = mark ? mark.number : 0;
-        res.render('articles/show', { article: article, author: user.username, markValue: markValue,
-            averageMark: averageMark });
-      });
+        averageMark = sum / numbers.length;
+      }
 
     });
+
+    Mark.findOne({ article: article, user: article.user }, function (err, mark) {
+      if (err) next(err);
+
+      var markValue = mark ? mark.number : 0;
+      res.render('articles/show', { article: article, markValue: markValue, averageMark: averageMark });
+    });
+
   });
 });
 
@@ -76,33 +96,20 @@ router.get('/:id/edit', function (req, res, next) {
 router.post('/:id/edit', function (req, res, next) {
   var title = req.body.title;
   var body = req.body.body;
-
-  Article.findById(req.params.id, function (err, article) {
+  
+  Article.update(req.params.id, title, body, function (err, article) {
     if (err) return next(err);
-
-    if (article) {
-      article.title = title;
-      article.body = body;
-
-      article.save(function (err) {
-        if (err) return next(err);
-      });
-    }
   });
 
   res.send({});
 });
 
 router.post('/:id/destroy', function (req, res, next) {
-  Article.remove({ _id: req.params.id }, function (err) {
+  Article.destroy(req.params.id, function (err) {
     if (err) return next(err);
   });
 
-  Article.find({ userId: req.session.currentUserId }, function (err, articles) {
-    if (err) return next(err);
-
-    res.render('articles/index', { articles: articles });
-  });
+  res.redirect('/articles');
 });
 
 router.post('/:id/mark', function (req, res, next) {
