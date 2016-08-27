@@ -5,14 +5,32 @@ block vars
 block content
   h1 All articles
 
-  table.table.table-condensed.table-striped
-    thead
-      tr
-        th title
-        th created
-    tbody
-      each article in articles
-        tr
-          td
-            a(href='/articles/#{article.id}')= article.title
-          td= article.created
+  form.form-horizontal.search-form(name="search-form")
+    .col-md-offset-3.col-lg-6
+      input(name="search", type="text", placeholder="Search article").form-control#search-input
+    button(type="submit", data-loading-text="Searching...").btn.btn-primary Search
+
+  #articles-list
+    include ./partials/listOfArticles
+
+  script.
+    $(document.forms['search-form']).on('submit', function (e) {
+       e.preventDefault();
+      var form = $(this);
+      $('.error', form).html('');
+      $(":submit", form).button("loading");
+      $.ajax({
+        url: "/articles/search",
+        method: "POST",
+        data: form.serialize(),
+        complete: function () {
+          $(":submit", form).button("reset");
+        },
+        statusCode: {
+          200: function (data) {
+            $('#articles-list').html(data);
+          }
+        }
+      });
+      return false;
+    });

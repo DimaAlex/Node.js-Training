@@ -1,0 +1,11 @@
+table.table.table-condensed.table-striped
+  thead
+    tr
+      th title
+      th created
+  tbody
+    each article in articles
+      tr
+        td
+          a(href='/articles/#{article.id}')= article.title
+        td= article.created
