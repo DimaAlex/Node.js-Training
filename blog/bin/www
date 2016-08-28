@@ -24,7 +24,7 @@ var server = http.createServer(app);
 // add socket.io to project
 
 var io = require('socket.io')(server);
-app.set('io', io);
+app.set('socketio', io);
 
 io.on('connection', function(socket){
   socket.on('room', function(room) {

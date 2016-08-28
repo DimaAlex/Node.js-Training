@@ -1,4 +1,4 @@
-h4 Comments
+h4#comments-length Comments(#{comments.length})
 .row
   form.form-horizontal.comment-form(name="comment-form")
     .col-lg-8
@@ -36,4 +36,11 @@ script.
       }
     });
     return false;
+  });
+  var socket = io();
+  socket.on('connect', function () {
+    socket.emit('room', '#{article.id}');
+  });
+  socket.on('create comment', function (data) {
+    $('#comments-length').text('Comments(' + data + ')')
   });
