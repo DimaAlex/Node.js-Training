@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   Article.find().sort({created: -1}).populate('user').exec(function(err, articles) {
     if (err) return next(err);
 
-    res.render('articles/index', { articles: articles });
+    res.render('articles/index', { articles: articles, header: 'All articles' });
   });
 });
 
@@ -156,6 +156,10 @@ router.post('/:id/comment', function (req, res, next) {
 
     Comment.create(message, user, article, function (err, comment) {
       if (err) return next(err);
+
+      var io = req.app.get('socketio');
+      io.sockets.in('' + articleId).emit('create comment', article.comments.length + 1);
+
     });
   });
 

@@ -1,4 +1,4 @@
-h4 Comments
+h4#comments-length Comments(#{comments.length})
 .row
   form.form-horizontal.comment-form(name="comment-form")
     .col-lg-8
@@ -7,10 +7,15 @@ h4 Comments
     button(type="submit", data-loading-text="Creating...").btn.btn-primary Go
     span.help-block.error
 
-ul
-  each comment in comments
-    p= comment.user.username
-    li= comment.message
+.col-lg-8
+  table.table.table-condensed.table-striped
+    tbody
+      each comment in comments
+        tr
+          td
+            ul.list-inline
+              li= comment.user.username
+              li= comment.message
 
 script.
   $(document.forms['comment-form']).on('submit', function () {
@@ -36,4 +41,16 @@ script.
       }
     });
     return false;
+  });
+
+  $("#comments-length").click(function () {
+    window.location.href = "/articles/#{article.id}";
+  });
+
+  var socket = io();
+  socket.on('connect', function () {
+    socket.emit('room', '#{article.id}');
+  });
+  socket.on('create comment', function (data) {
+    $('#comments-length').text('Comments(' + data + ')')
   });

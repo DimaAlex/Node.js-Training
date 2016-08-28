@@ -3,19 +3,25 @@ block vars
   - var title= 'Account'
 
 block content
-  h1 My account
+  h1 Account
 
-  h4 First name
-  p= user.firstName
+  if user.firstName
+    h4 First name
+    p= user.firstName
 
-  h4 Last name
-  p= user.lastName
+  if user.lastName
+    h4 Last name
+    p= user.lastName
 
-  h4 From city
-  p= user.city
+  if usercity
+    h4 From city
+    p= user.city
 
   h4 Created at
   p= user.created
+
+  unless currentUser.id === user.id
+    a(href='/users/#{user.id}/articles').btn.btn-primary Articles of this user
 
   if currentUser.id === user.id
     a(href='/users/#{user.id}/edit').btn.btn-primary Edit account

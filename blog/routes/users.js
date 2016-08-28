@@ -38,10 +38,14 @@ router.post('/:id/edit', function (req, res, next) {
 });
 
 router.get('/:id/articles', function (req, res, next) {
-  Article.find({ userId: req.params.id }, function (err, articles) {
+  User.findById(req.params.id).populate('articles').exec(function (err, user) {
     if (err) return next(err);
 
-    res.render('articles/index', { articles: articles });
+    var name = '';
+    if (user.firstName) name += user.firstName + ' ';
+    if (user.lastName) name += user.lastName + ' ';
+    if (!name) name = 'Anonimus';
+    res.render('articles/index', { articles: user.articles, header: name + ' articles' });
   });
 });
 
