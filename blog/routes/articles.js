@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   Article.find().sort({created: -1}).populate('user').exec(function(err, articles) {
     if (err) return next(err);
 
-    res.render('articles/index', { articles: articles });
+    res.render('articles/index', { articles: articles, header: 'All articles' });
   });
 });
 

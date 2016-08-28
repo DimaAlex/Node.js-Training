@@ -3,15 +3,18 @@ block vars
   - var title= 'All articles'
 
 block content
-  h1 All articles
+  h1= header
 
   form.form-horizontal.search-form(name="search-form")
     .col-md-offset-3.col-lg-6
       input(name="search", type="text", placeholder="Search article").form-control#search-input
     button(type="submit", data-loading-text="Searching...").btn.btn-primary Search
 
-  #articles-list
-    include ./partials/listOfArticles
+  if articles && articles.length > 0
+    #articles-list
+      include ./partials/listOfArticles
+  else
+    h3 There is no articles.
 
   script.
     $(document.forms['search-form']).on('submit', function (e) {
