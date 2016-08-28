@@ -25,18 +25,13 @@ router.get('/:id/edit', function (req, res, next) {
 
 router.post('/:id/edit', function (req, res, next) {
   var username = req.body.username;
-  var password = req.body.password;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var city = req.body.city;
+  var paramsId = req.params.id;
 
-  User.findById(req.params.id, function (err, user) {
+  User.update(req.currentUser, username, firstName, lastName, city, paramsId, function (err, user) {
     if (err) return next(err);
-
-    if (user) {
-      user.username = username;
-
-      user.save(function(err) {
-        if (err) throw err;
-      });
-    }
   });
 
   res.send({});
