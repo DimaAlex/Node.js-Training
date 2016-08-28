@@ -21,6 +21,7 @@
     "node-sass-middleware": "0.8.0",
     "path": "^0.12.7",
     "serve-favicon": "~2.3.0",
+    "socket.io": "^1.4.8",
     "util": "^0.10.3"
   },
   "devDependencies": {

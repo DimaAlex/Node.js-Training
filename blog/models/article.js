@@ -19,7 +19,15 @@ var schema = new Schema({
     type: Schema.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  comments: [{
+    type: Schema.ObjectId,
+    ref: 'Comment'
+  }],
+  marks: [{
+    type: Schema.ObjectId,
+    ref: 'Mark'
+  }]
 });
 
 schema.index({ title: 'text' });
