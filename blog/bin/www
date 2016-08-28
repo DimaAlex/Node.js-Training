@@ -21,6 +21,17 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+// add socket.io to project
+
+var io = require('socket.io')(server);
+app.set('io', io);
+
+io.on('connection', function(socket){
+  socket.on('room', function(room) {
+    socket.join(room);
+  });
+});
+
 /**
  * Listen on provided port, on all network interfaces.
  */

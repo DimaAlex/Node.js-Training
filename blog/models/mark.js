@@ -32,8 +32,11 @@ schema.statics.create = function(number, user, article, callback) {
     function (mark, callback) {
       if (mark) {
         mark.number = number;
+
       } else {
         mark = new Mark({ number: number, article: article, user: user });
+        article.marks.push(mark);
+        article.save();
       }
       mark.save(function (err) {
         if (err) throw err;
@@ -54,6 +57,9 @@ schema.statics.destroy = function(user, article, callback) {
     function (mark, callback) {
       mark.remove( function(err, mark) {
         if (err) throw err;
+
+        article.marks.pull(mark);
+        article.save();
 
         callback(null, mark);
       });

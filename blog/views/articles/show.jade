@@ -1,6 +1,8 @@
 extends ../layout/layout
 block vars
   - var title= 'Article'
+block head
+  script(src="/socket.io/socket.io.js")
 
 block content
   h1 Article
@@ -15,7 +17,10 @@ block content
   p= article.created
 
   h4 Author
-  a(href="/users/#{article.user.id}") #{article.user.firstName} #{article.user.lastName}
+  if (article.user.firstName || article.user.lastName)
+    a(href="/users/#{article.user.id}") #{article.user.firstName} #{article.user.lastName}
+  else
+    a(href="/users/#{article.user.id}") #{article.user.username}
 
   h4 Average mark
   p= averageMark
@@ -27,6 +32,9 @@ block content
     a(href='/articles/#{article.id}/edit').btn.btn-primary Edit article
     .pad
     a(href='', onclick="$('<form method=POST action=/articles/#{article.id}/destroy>').submit();return false").btn.btn-danger Delete article
+
+  #comments-list
+    include partials/listOfComments
 
   script.
     $('#input-rating').on('rating.change', function (event, value) {
