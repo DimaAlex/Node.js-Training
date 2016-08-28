@@ -17,9 +17,6 @@ var schema = new Schema({
   lastName: {
     type: String
   },
-  birthDate: {
-    type: Date
-  },
   city: {
     type: String
   },
@@ -80,6 +77,31 @@ schema.statics.authorize = function(username, password, callback) {
 
           callback(null, user);
         });
+      }
+    }
+  ], callback);
+};
+
+schema.statics.update = function(currentUser, username, firstName, lastName, city, paramsId, callback) {
+  var User = this;
+  async.waterfall([
+    function (callback) {
+      User.findById(currentUser.id, callback);
+    },
+    function (user, callback) {
+      if (currentUser.id == paramsId) {
+        user.username = username;
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.city = city;
+
+        user.save(function(err) {
+          if (err) throw err;
+
+          callback(null, user);
+        });
+      } else {
+        next(new AuthError("No permission"));
       }
     }
   ], callback);

@@ -9,14 +9,26 @@ block content
     .form-group
       label(for="input-username").col-lg-2.control-label Name
 
-      .col-lg-10
+      .col-lg-8
         input(name="username", value=currentUser.username, type="text", placeholder="Name").form-control#input-username
 
     .form-group
-      label(for="input-password").col-lg-2.control-label Password
+      label(for="input-firstName").col-lg-2.control-label First name
 
-      .col-lg-10
-        input(name="password", type="password", placeholder="Password").form-control#input-password
+      .col-lg-8
+        input(name="firstName", value=currentUser.firstName, type="text", placeholder="First name").form-control#input-firstName
+
+    .form-group
+      label(for="input-lastName").col-lg-2.control-label Last name
+
+      .col-lg-8
+        input(name="lastName", value=currentUser.lastName, type="text", placeholder="Last name").form-control#input-lastName
+
+    .form-group
+      label(for="input-city").col-lg-2.control-label City
+
+      .col-lg-8
+        input(name="city", value=currentUser.city, type="text", placeholder="City").form-control#input-city
 
     .form-group
       .col-lg-offset-2.col-lg-10

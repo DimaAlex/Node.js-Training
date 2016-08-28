@@ -3,6 +3,7 @@ var router = express.Router();
 var Article = require('../models/article').Article;
 var User = require('../models/user').User;
 var Mark = require('../models/mark').Mark;
+var arrayUniqueById = require('../lib/arrayUniqueById');
 
 router.get('/', function(req, res, next) {
   Article.find().sort({created: -1}).populate('user').exec(function(err, articles) {
@@ -45,7 +46,7 @@ router.post('/search', function (req, res, next) {
                 users.forEach(function (user) {
                   allArticles = articles.concat(user.articles);
                 });
-                res.render('articles/partials/listOfArticles', { articles: allArticles });
+                res.render('articles/partials/listOfArticles', { articles: arrayUniqueById(allArticles) });
               });
         });
   }
